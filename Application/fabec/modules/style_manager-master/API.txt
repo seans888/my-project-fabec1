@@ -1,0 +1,20 @@
+
+Style Manager API
+=================
+The following is an overview of using the Style Manager API.
+
+
+Add style presets to modules and themes
+----------------------
+  1. Export your category from Style Manager interface.
+  2. Put the exported file in folder of your module or theme. 
+     Example '../mymodule/style_manager_presets/style_manager-mycat.settings'
+  3. Implement 'hook_presets_folder()'
+
+        function mymodule_presets_folder() {
+          $module_path = drupal_get_path('module', 'mymodule');
+          return array($module_path . '/style_manager_presets');
+        }
+
+  In the presets folder can be contain one or more files, 
+  they will be automatically loaded in the Style Manager.

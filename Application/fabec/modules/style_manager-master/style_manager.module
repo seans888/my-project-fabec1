@@ -1,0 +1,837 @@
+<?php
+
+/**
+ * @file
+ * Allow to manage css.
+ */
+
+define('STYLE_MANAGER_CSS_CODE_COLORS', 7);
+
+/**
+ * Implements hook_menu().
+ */
+function style_manager_menu() {
+  $items['style_manager/get_cat_list.json'] = array(
+    'page callback' => 'style_manager_get_cat_list_json',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/get_category_groups.json'] = array(
+    'page callback' => 'style_manager_get_category_groups_json',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/save_styles.json'] = array(
+    'page callback' => 'style_manager_save_styles_json',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+
+  // Form callback.
+  $items['style_manager/get_styles_form.json'] = array(
+    'page callback' => 'style_manager_get_styles_form_json',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+
+  // Preset callback.
+  $items['style_manager/preset_save.json'] = array(
+    'page callback' => 'style_manager_preset_save_json',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/preset_save_as.json'] = array(
+    'page callback' => 'style_manager_preset_save_as_json',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/preset_rename.json'] = array(
+    'page callback' => 'style_manager_preset_rename_json',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/preset_delete.json'] = array(
+    'page callback' => 'style_manager_preset_delete_json',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/set_default_preset.json'] = array(
+    'page callback' => 'style_manager_set_default_preset_json',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/get_css.json'] = array(
+    'page callback' => 'style_manager_get_css_json',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/preset_item_visibility_settings_save.json'] = array(
+    'page callback' => 'style_manager_preset_item_visibility_settings_save_json',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/preset_item_visibility_settings_save_all.json'] = array(
+    'page callback' => 'style_manager_preset_item_visibility_settings_save_all_json',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+
+  // Table with cat elements.
+  $items['style_manager/category_form_item/load'] = array(
+    'page callback' => 'style_manager_category_form_item_load',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/category_form_item/save'] = array(
+    'page callback' => 'style_manager_category_form_item_save',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/category_form_item/destroy'] = array(
+    'page callback' => 'style_manager_category_form_item_destroy',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+
+  // Category main settings.
+  $items['style_manager/category_load'] = array(
+    'page callback' => 'style_manager_category_load',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/category_save'] = array(
+    'page callback' => 'style_manager_category_save',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/category_reset'] = array(
+    'page callback' => 'style_manager_category_reset',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/category_destroy'] = array(
+    'page callback' => 'style_manager_category_destroy',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+
+  // Export/import.
+  $items['style_manager/category_export'] = array(
+    'page callback' => 'style_manager_category_export',
+    'access arguments' => array('style manager admin'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+  $items['style_manager/category_import'] = array(
+    'page callback' => 'style_manager_category_import',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+
+  $items['style_manager/css_widget_import_css.json'] = array(
+    'page callback' => 'style_manager_css_widget_import_css',
+    'access arguments' => array('style manager admin'),
+    'access callback' => 'style_manager_check_token',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/style_manager.menu.inc',
+  );
+
+  // Settings form.
+  $items['admin/config/user-interface/style_manager'] = array(
+    'title' => 'Style Manager',
+    'description' => 'Style editor.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('style_manager_settings'),
+    'access arguments' => array('style manager admin'),
+    'file' => 'includes/style_manager.admin.inc',
+  );
+
+  return $items;
+}
+
+
+/**
+ * Implements of hook_permission().
+ */
+function style_manager_permission() {
+  return array(
+    'style manager admin' => array(
+      'title' => t("Style manager"),
+      'description' => t("Allows a user to manage design of the site."),
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_init().
+ */
+function style_manager_init() {
+
+  module_load_include('inc', 'style_manager', 'includes/style_manager.helper');
+  if (arg(0) == 'style_manager') {
+    return;
+  }
+  if (user_access('style manager admin') && style_manager_path_visibility_check('style_manager_exclude_editor_paths')) {
+    style_manager_add_js_libraries();
+  }
+  style_manager_categoryes_init();
+  if (style_manager_path_visibility_check('style_manager_exclude_css_paths')) {
+    style_manager_add_styles();
+  }
+}
+
+/**
+ * Return module version.
+ */
+function style_manager_get_version() {
+  return '0.9';
+}
+
+/**
+ * Implements of hook_css3pie().
+ */
+function style_manager_css3pie() {
+  return array(
+    'style_manager' => variable_get('style_manager_css3pie', array()),
+  );
+}
+
+/**
+ * Implements of hook_context_registry().
+ */
+function style_manager_context_registry() {
+  $registry = array();
+  $registry['reactions'] = array(
+    'style_manager_reaction_preset' => array(
+      'title' => t('Style Manager'),
+      'description' => t('Set active preset for Style Manager.'),
+      'plugin' => 'style_manager_reaction_preset',
+    ),
+  );
+  return $registry;
+}
+
+/**
+ * Implements of hook_context_plugins().
+ */
+function style_manager_context_plugins() {
+  $plugins = array();
+  $plugins['style_manager_reaction_preset'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'style_manager') . '/includes',
+      'file' => 'style_manager.context_reaction.inc',
+      'class' => 'style_manager_reaction_preset',
+      'parent' => 'context_reaction',
+    ),
+  );
+  return $plugins;
+}
+
+/**
+ * Implements of hook_manager_presets_folder().
+ */
+function style_manager_presets_folder() {
+  return array(drupal_get_path('module', 'style_manager') . '/presets');
+}
+
+
+/**
+ * Implements of hook_style_manager_widgets().
+ */
+function style_manager_style_manager_widgets() {
+  $out = array(
+    'background' => array(
+      'form' => 'style_manager_background',
+      'title' => t('Background'),
+      'description' => t('Background image, background color.'),
+      'render' => 'style_manager_background_render',
+      'default' => array(
+        'color' => array(
+          'transparent' => FALSE,
+          'based_on' => '-',
+          'hex' => '',
+          'color_correct' => FALSE,
+        ),
+        'image' => array(
+          'url' => '',
+          'position-y' => array('str_value' => '-'),
+          'attachment' => '-',
+          'position-x' => array('str_value' => '-'),
+          'repeat' => '-',
+        ),
+        'image_post_processing' => array(
+          'transparent' => NULL,
+          'lightness' => NULL,
+          'disable' => FALSE,
+          'color' => array(
+            'based_on' => 'main_color',
+            'hex' => '',
+            'color_correct' => FALSE,
+          ),
+        ),
+      ),
+    ),
+    'padding' => array(
+      'form' => 'style_manager_padding',
+      'title' => t('Padding'),
+      'description' => t('Padding.'),
+      'render' => 'style_manager_padding_render',
+      'default' => array(
+        'top' => array('str_value' => '-'),
+        'right' => array('str_value' => '-'),
+        'bottom' => array('str_value' => '-'),
+        'left' => array('str_value' => '-'),
+      ),
+    ),
+    'margin' => array(
+      'form' => 'style_manager_margin',
+      'title' => t('Margin'),
+      'description' => t('Margin.'),
+      'render' => 'style_manager_margin_render',
+      'default' => array(
+        'top' => array('str_value' => '-'),
+        'right' => array('str_value' => '-'),
+        'bottom' => array('str_value' => '-'),
+        'left' => array('str_value' => '-'),
+      ),
+    ),
+    'box_shadow' => array(
+      'form' => 'style_manager_box_shadow',
+      'title' => t('Box shadow'),
+      'description' => t('Box-shadow.'),
+      'render' => 'style_manager_box_shadow_render',
+      'default' => array(
+        'disable' => FALSE,
+        'inset' => FALSE,
+        'offset_x' => array(
+          'int_value' => 0,
+          'int_value_unit' => 'px',
+        ),
+        'size' => array(
+          'int_value' => 0,
+          'int_value_unit' => 'px',
+        ),
+        'offset_y' => array(
+          'int_value' => 0,
+          'int_value_unit' => 'px',
+        ),
+        'blur' => array(
+          'int_value' => NULL,
+          'int_value_unit' => 'px',
+        ),
+        'color' => array(
+          'based_on' => 'hex',
+          'hex' => '000000',
+          'color_correct' => FALSE,
+          'hue' => array('+', NULL),
+          'saturation' => array('=', NULL),
+          'lightness' => array('=', NULL),
+        ),
+      ),
+    ),
+    'position' => array(
+      'form' => 'style_manager_position',
+      'title' => t('Position'),
+      'description' => t('Position, z-index, top, right, bottom, left.'),
+      'render' => 'style_manager_position_render',
+      'default' => array(
+        'position' => '-',
+        'z_index' => NULL,
+        'placement' => array(
+          'top' => array('str_value' => '-'),
+          'right' => array('str_value' => '-'),
+          'bottom' => array('str_value' => '-'),
+          'left' => array('str_value' => '-'),
+        ),
+      ),
+    ),
+    'box' => array(
+      'form' => 'style_manager_box',
+      'title' => t('Box size'),
+      'description' => t('Display, clear, float, overflow, height, width.'),
+      'render' => 'style_manager_box_render',
+      'default' => array(
+        'height' => array('str_value' => '-'),
+        'display' => '-',
+        'width' => array('str_value' => '-'),
+        'overflow' => '-',
+        'float' => '-',
+        'clear' => '-',
+      ),
+    ),
+    'border' => array(
+      'form' => 'style_manager_border',
+      'title' => t('Border'),
+      'description' => t('Border, border-radius.'),
+      'render' => 'style_manager_border_render',
+      'default' => array(
+        'top' => FALSE,
+        'right' => FALSE,
+        'bottom' => FALSE,
+        'left' => FALSE,
+        'style' => '-',
+        'width' => array(
+          'str_value' => '-',
+          'int_value' => 1,
+          'int_value_unit' => 'px',
+          'int_value_global_unit' => 'val',
+        ),
+        'color' => array(
+          'based_on' => '-',
+          'hex' => '',
+          'color_correct' => FALSE,
+          'default' => array(
+            'based_on' => 'main_color',
+            'hex' => '',
+            'color_correct' => FALSE,
+            'hue' => array('+', NULL),
+            'saturation' => array('=', NULL),
+            'lightness' => array('=', NULL),
+          ),
+          'top' => array(
+            'based_on' => 'main_color',
+            'hex' => '',
+            'color_correct' => FALSE,
+            'hue' => array('+', NULL),
+            'saturation' => array('=', NULL),
+            'lightness' => array('=', NULL),
+          ),
+          'right' => array(
+            'based_on' => 'main_color',
+            'hex' => '',
+            'color_correct' => FALSE,
+            'hue' => array('+', NULL),
+            'saturation' => array('=', NULL),
+            'lightness' => array('=', NULL),
+          ),
+          'bottom' => array(
+            'based_on' => 'main_color',
+            'hex' => '',
+            'color_correct' => FALSE,
+            'hue' => array('+', NULL),
+            'saturation' => array('=', NULL),
+            'lightness' => array('=', NULL),
+          ),
+          'left' => array(
+            'based_on' => 'main_color',
+            'hex' => '',
+            'color_correct' => FALSE,
+            'hue' => array('+', NULL),
+            'saturation' => array('=', NULL),
+            'lightness' => array('=', NULL),
+          ),
+        ),
+        'border_radius' => array(
+          'top_left' => array(
+            'int_value' => NULL,
+            'int_value_unit' => 'px',
+            'str_value' => 'value',
+            'int_value_global_unit' => 'val',
+          ),
+          'top_right' => array(
+            'int_value' => NULL,
+            'int_value_unit' => 'px',
+            'str_value' => 'value',
+            'int_value_global_unit' => 'val',
+          ),
+          'bottom_right' => array(
+            'int_value' => NULL,
+            'int_value_unit' => 'px',
+            'str_value' => 'value',
+            'int_value_global_unit' => 'val',
+          ),
+          'bottom_left' => array(
+            'int_value' => NULL,
+            'int_value_unit' => 'px',
+            'str_value' => 'value',
+            'int_value_global_unit' => 'val',
+          ),
+        ),
+        'different_color' => FALSE,
+      ),
+    ),
+    'font' => array(
+      'form' => 'style_manager_font',
+      'title' => t('Font'),
+      'description' => t('Font-family, font-weight, font-style, text-shadow, color, font-size, font-style, text-transform, text-decoration, text-align, line-height.'),
+      'render' => 'style_manager_font_render',
+      'default' => array(
+        'font_family' => '-',
+        'font_weight' => '-',
+        'font_size' => array(
+          'int_value' => NULL,
+          'int_value_unit' => 'px',
+        ),
+        'font_style' => '-',
+        'line_height' => array(
+          'int_value' => NULL,
+          'int_value_unit' => 'px',
+        ),
+        'text_transform' => '-',
+        'text_decoration' => '-',
+        'color' => array(
+          'based_on' => '-',
+          'hex' => '',
+          'color_correct' => FALSE,
+        ),
+        'shadow' => array(
+          'offset_x' => array(
+            'int_value' => NULL,
+            'int_value_unit' => 'px',
+          ),
+          'offset_y' => array(
+            'int_value' => NULL,
+            'int_value_unit' => 'px',
+          ),
+          'blur' => array(
+            'int_value' => NULL,
+            'int_value_unit' => 'px',
+          ),
+          'color' => array(
+            'based_on' => '-',
+            'hex' => '',
+            'color_correct' => FALSE,
+          ),
+        ),
+      ),
+    ),
+    'list_style' => array(
+      'form' => 'style_manager_list_style',
+      'title' => t('List style'),
+      'description' => t('List-style.'),
+      'render' => 'style_manager_list_style_render',
+      'default' => array(
+        'type' => '-',
+        'position' => '-',
+        'image' => '-',
+      ),
+    ),
+    'gradient' => array(
+      'form' => 'style_manager_gradient',
+      'title' => t('Gradient'),
+      'description' => t('CSS3 gradient.'),
+      'render' => 'style_manager_gradient_render',
+      'default' => array(
+        'css_code' => '',
+        'color_mode' => 'mode_h',
+        'position' => 'vertical',
+        'preset' => 'custom',
+        'color' => array(
+          'based_on' => 'main_color',
+          'hex' => '',
+          'color_correct' => FALSE,
+          'hue' => array('+', NULL),
+          'saturation' => array('=', NULL),
+          'lightness' => array('=', NULL),
+        ),
+      ),
+    ),
+    'css_code' => array(
+      'form' => 'style_manager_css_code',
+      'render' => 'style_manager_css_code_render',
+      'title' => t('CSS code'),
+      'description' => t('Textarea for custom css code.'),
+      'default' => array(
+        'css_code' => '',
+      ),
+    ),
+    'reset' => array(
+      'form' => 'style_manager_reset',
+      'title' => t('Reset'),
+      'description' => t('Reset settings for: background, border, font, list-style, margin, padding.'),
+      'render' => 'style_manager_reset_render',
+      'default' => array(
+        'type' => 'all',
+      ),
+    ),
+    'style_manager_global_color' => array(
+      'form' => 'style_manager_global_color',
+      'title' => t('Color'),
+      'description' => t(''),
+      'global' => TRUE,
+      'render' => 'style_manager_global_color_render',
+      'default' => array(
+        'based_on' => 'main_color',
+        'hex' => '',
+        'color_correct' => FALSE,
+      ),
+    ),
+    'style_manager_global_font' => array(
+      'form' => 'style_manager_global_font',
+      'title' => t('Font'),
+      'description' => t(''),
+      'global' => TRUE,
+      'render' => 'style_manager_global_font_render',
+      'default' => array(
+        'font' => 'Verdana, Geneva, sans-serif',
+      ),
+    ),
+    'style_manager_global_numeric' => array(
+      'form' => 'style_manager_global_numeric',
+      'title' => t('Numeric'),
+      'description' => t(''),
+      'global' => TRUE,
+      'render' => 'style_manager_global_numeric_render',
+      'default' => array(
+        'value' => array(),
+      ),
+    ),
+  );
+  return $out;
+}
+
+/**
+ * Load widget info.
+ */
+function style_manager_get_widget_info($type = FALSE, $key = FALSE) {
+  $mapper = & drupal_static(__FUNCTION__);
+  if (empty($mapper)) {
+    $mapper = module_invoke_all('style_manager_widgets');
+    drupal_alter('style_manager_widgets', $mapper);
+  }
+
+  if (!empty($mapper[$type][$key]) && !empty($type) && !empty($key)) {
+    return $mapper[$type][$key];
+  }
+  elseif (!empty($mapper[$type]) && !empty($type) && empty($key)) {
+    return $mapper[$type];
+  }
+  elseif (!empty($mapper) && empty($type) && empty($key)) {
+    return $mapper;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+
+/**
+ * Add JS ans CSS files for admin interface.
+ */
+function style_manager_add_js_libraries() {
+  $module_path = drupal_get_path('module', 'style_manager');
+  $extjs_path = '';
+  if (module_exists('libraries')) {
+    $extjs_path = libraries_get_path('extjs') . '/ext-4.0.7-gpl';
+    $extjs_files_type = 'file';
+  }
+  if (!file_exists($extjs_path . '/ext-all.js')) {
+    $extjs_path = 'http://cdn.sencha.io/ext-4.0.7-gpl';
+    $extjs_files_type = 'external';
+  }
+
+  // Add imce.
+  if (module_invoke('imce', 'access')) {
+    $imcepath = drupal_get_path('module', 'imce');
+    drupal_add_js($imcepath . '/js/imce.js');
+    drupal_add_js($imcepath . '/js/imce_set_app.js');
+    $settings = array(
+      'imce' => array('url' => url('imce', array('query' => array('app' => 'style_manager|url@')))),
+    );
+    drupal_add_js(array('style_manager' => $settings), 'setting');
+  }
+
+  // JS settings.
+  $js_settings = array();
+  $widget_info = style_manager_get_widget_info();
+  $widget_titles = array();
+  $widget_global = array();
+  foreach ($widget_info as $key => $data) {
+    $widget_titles[$key] = $data['title'];
+    $widget_global[$key] = empty($data['global']) ? 0 : 1;
+  }
+  array_multisort($widget_global, SORT_ASC, $widget_titles, SORT_ASC, $widget_info);
+  $js_settings['token'] = style_manager_get_token();
+  foreach ($widget_info as $key => $data) {
+    if (!empty($data['global'])) {
+      $js_settings['global_widgets'][] = array(
+        'value' => $key,
+        'name' => $data['title'],
+        'description' => $data['description'],
+      );
+      $js_settings['widgets'][] = array(
+        'value' => $key,
+        'name' => 'g: ' . $data['title'],
+        'description' => $data['description'],
+      );
+    }
+    else {
+      $js_settings['widgets'][] = array(
+        'value' => $key,
+        'name' => $data['title'],
+        'description' => $data['description'],
+      );
+    }
+  }
+  $js_settings['title'] = t('Style manager (v @version)', array('@version' => style_manager_get_version()));
+  drupal_add_js(array('style_manager' => $js_settings), 'setting');
+
+  // Add ExtJs resources.
+  drupal_add_js($extjs_path . '/ext-all.js', array('type' => $extjs_files_type));
+  drupal_add_css($extjs_path . '/resources/css/ext-all-scoped.css', array('type' => $extjs_files_type));
+
+  // Add style_manager resources.
+  drupal_add_js($module_path . '/js/syntax.js');
+  drupal_add_js($module_path . '/js/jscolor/jscolor.js');
+  drupal_add_js($module_path . '/js/css_inspector.js');
+  drupal_add_js($module_path . '/js/style_manager.js');
+  drupal_add_js($module_path . '/js/presets.js');
+  drupal_add_js($module_path . '/js/groups.js');
+  drupal_add_js($module_path . '/js/layout.js');
+  drupal_add_js($module_path . '/js/settings_window.js');
+  drupal_add_js($module_path . '/js/widget_gradient.js');
+  drupal_add_js($module_path . '/js/widget_css_code.js');
+  drupal_add_js($module_path . '/js/form_listeners.js');
+  drupal_add_css($module_path . '/styles/style_manager.css');
+}
+
+
+/**
+ * Add styles of all presets to page.
+ */
+function style_manager_add_styles() {
+  module_load_include('inc', 'style_manager', 'includes/style_manager.render');
+  $cat_info = style_manager_get_cat_info();
+  $presets = array();
+  $css_key = '';
+  if (!empty($cat_info)) {
+    foreach ($cat_info as $data) {
+      $default_preset = style_manager_get_page_preset($data['info']['id']);
+
+      if ($data['info']['id'] != 'global_config' && $default_preset != 'disable') {
+        $presets[$data['info']['id']] = $default_preset;
+      }
+      $css_key .= style_manager_get_preset_key($data['info']['id'], $default_preset);
+    }
+  }
+  if ($css_key) {
+    $css_path = file_build_uri('style_manager_cache/css/' . md5($css_key) . '.css');
+    $success = file_exists($css_path) || style_manager_render_styles($presets, $css_path);
+    if ($success) {
+      drupal_add_css($css_path, array(
+        'preprocess' => FALSE,
+        'weight' => 5000,
+        'group' => CSS_THEME + 1000,
+        'every_page' => FALSE,
+      ));
+    }
+  }
+}
+
+
+/**
+ * Invoke all modules and add style_manager categories.
+ */
+function style_manager_categoryes_init() {
+  if (empty($mapper)) {
+    $presets_folder = module_invoke_all('presets_folder');
+    drupal_alter('presets_folder', $presets_folder);
+  }
+  $key = md5(serialize($presets_folder));
+  $cache = cache_get('style_manager_presets_folder_key');
+  if (!empty($cache->data) && $cache->data == $key) {
+    return FALSE;
+  }
+  else {
+    cache_set('style_manager_presets_folder_key', $key);
+  }
+  module_load_include('inc', 'style_manager', 'includes/style_manager.image');
+  style_manager_clean_css_cache();
+  $styles = array();
+  if (!empty($presets_folder)) {
+    foreach ($presets_folder as $folder) {
+      $files = file_scan_directory($folder, '/.*\.settings/');
+      if (empty($files)) {
+        continue;
+      }
+      foreach ($files as $file_data) {
+        $file_content = fread(fopen($file_data->uri, "r"), filesize($file_data->uri));
+        $styles[] = json_decode($file_content, TRUE);
+      }
+    }
+  }
+  $active_styles = array();
+  if (!empty($styles)) {
+    foreach ($styles as $style_data) {
+      $active_styles[] = $style_data['info']['id'];
+      if (!style_manager_get_cat_info($style_data['info']['id']) && isset($style_data['info']['id'])) {
+        $style_data['info']['from_code'] = TRUE;
+        style_manager_set_cat_info($style_data['info']['id'], $style_data['info'], 'info');
+        style_manager_set_cat_info($style_data['info']['id'], $style_data['data'], 'data');
+        if (!empty($style_data['images'])) {
+          foreach ($style_data['preset_data'] as &$preset) {
+            $preset['data'] = style_manager_images_import($preset['data'], $style_data['images']);
+          }
+        }
+        style_manager_set_cat_info($style_data['info']['id'], $style_data['preset_data'], 'preset_data');
+      }
+    }
+  }
+  $all_cats = style_manager_get_cat_info();
+  foreach ($all_cats as $cat) {
+    if (!empty($cat['info']['from_code']) && !in_array($cat['info']['id'], $active_styles)) {
+      style_manager_cat_delete($cat['info']['id']);
+    }
+  }
+}
+
+/**
+ * Check token for menu callback.
+ */
+function style_manager_check_token() {
+  return ($_REQUEST['token'] === style_manager_get_token());
+}
+
+/**
+ * Check token for menu callback.
+ */
+function style_manager_get_token() {
+  if (empty($_SESSION['style_manager_token'])) {
+    $_SESSION['style_manager_token'] = md5(time());
+
+    // Mark this page as being uncacheable.
+    drupal_page_is_cacheable(FALSE);
+  }
+  return $_SESSION['style_manager_token'];
+}

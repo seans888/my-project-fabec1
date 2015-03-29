@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Install and uninstall functions for the Style manager module.
+ */
+
+/**
+ * Implements of hook_install().
+ */
+function style_manager_install() {
+  variable_set('style_manager_exclude_editor_paths', "admin*\nimce*");
+  variable_set('style_manager_exclude_css_paths', "admin*\nimce*");
+}
+
+/**
+ * Implements of hook_uninstall().
+ */
+function style_manager_uninstall() {
+  $result = db_select('variable', 'v')
+    ->condition('v.name', 'style_manager_preset%', 'LIKE')
+    ->fields('v', array('name'))
+    ->execute()
+    ->fetchAll();
+
+  if ($result) {
+    foreach ($result as $data) {
+      variable_del($data->name);
+    }
+  }
+  variable_del('style_manager_css3pie');
+  variable_del('style_manager_exclude_editor_paths');
+  variable_del('style_manager_exclude_css_paths');
+}

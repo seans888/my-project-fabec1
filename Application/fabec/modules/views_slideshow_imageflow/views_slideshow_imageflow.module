@@ -1,0 +1,42 @@
+<?php
+// $Id: views_slideshow_imageflow.module,v 1.1 2009/03/30 21:20:37 aaron Exp $
+
+/**
+ *  @file
+ *  The Views Slideshow: ImageFlow adds ImageFlow functionality to Views Slideshows.
+ *
+ *  This requires the ImageFlow JavaScript library from http://finnrudolph.de/ImageFlow.
+ *  You will need to download the library and copy it to your plugins directory,
+ *  at /sites/all/plugins/imageflow.
+ *  If you install it elsewhere, you'll need to configure that at
+ *  /admin/build/views/views_slideshow_imageflow.
+ */
+
+/**
+ *  Implements hook_menu().
+ */
+function views_slideshow_imageflow_menu() {
+  $items['admin/build/views/views_slideshow_imageflow'] = array(
+    'title' => 'Views Slideshow: ImageFlow',
+    'description' => 'Configure Views Slideshow: ImageFlow options.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('views_slideshow_imageflow_settings'),
+    'file' => 'views_slideshow_imageflow.admin.inc',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer views'),
+  );
+  return $items;
+}
+
+/**
+ *  Implements hook_theme().
+ */
+function views_slideshow_imageflow_theme($existing, $type, $theme, $path) {
+  return array(
+    'views_slideshow_imageflow' => array(
+      'arguments' => array('view' => NULL, 'options' => array(), 'rows' => array(), 'title' => ''),
+      'template' => 'views-slideshow-imageflow',
+      'file' => 'views_slideshow_imageflow.theme.inc',
+    ),
+  );
+}

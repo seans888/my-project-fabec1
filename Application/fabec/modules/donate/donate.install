@@ -1,0 +1,26 @@
+<?php // $Id: donate.install,v 1.2 2010/09/30 21:36:46 jerdavis Exp $
+
+/**
+ * Implementation of hook_install().
+ */
+function donate_install() {
+  // Update the pay_form if pay_donate has been used to create any forms in the past.
+  if (db_table_exists('pay_form')) {
+    db_query("UPDATE {pay_form} SET handler = 'donate' WHERE handler = 'pay_donate'");
+  }
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function donate_uninstall() {
+  // Whack the schema cache.
+  drupal_get_schema(NULL, TRUE);
+
+  // Deactivate all of our donation forms from the pay list.
+  // It seems irresponsible to delete them if there's still financial
+  // data lying around.
+  if (db_table_exists('pay_form')) {
+    db_query("UPDATE {pay_form} SET status = 0 WHERE handler = 'donate'");
+  }
+}

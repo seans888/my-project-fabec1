@@ -1,0 +1,13 @@
+; $Id: donate.info,v 1.1 2010/09/27 23:10:17 jerdavis Exp $ 
+name = Donate
+description = Accept donations using the Pay API
+package = Payment forms
+core = 7.x
+dependencies[] = pay
+
+; Information added by drupal.org packaging script on 2012-03-21
+version = "7.x-1.0-beta1"
+core = "7.x"
+project = "donate"
+datestamp = "1332348345"
+

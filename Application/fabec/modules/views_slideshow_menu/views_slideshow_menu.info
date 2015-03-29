@@ -1,0 +1,11 @@
+name = Views Slideshow: Menu
+description = Adds a menu slideshow mode to Views Slideshows.
+dependencies[] = views_slideshow
+package = Views
+core = 6.x
+; Information added by drupal.org packaging script on 2013-10-19
+version = "6.x-2.x-dev"
+core = "6.x"
+project = "views_slideshow_menu"
+datestamp = "1382165169"
+

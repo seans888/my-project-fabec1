@@ -1,0 +1,5 @@
+name = Style manager
+description = Manage styles.
+core = 7.x
+package = Style manager
+configure = admin/config/user-interface/style_manager

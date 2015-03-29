@@ -1,0 +1,14 @@
+; $Id: views_slideshow_imageflow.info,v 1.1 2009/03/30 21:20:37 aaron Exp $
+name = Views Slideshow: Imageflow
+description = Adds Imageflow functionality to Views Slideshows.
+dependencies[] = views_slideshow
+package = Views
+core = 6.x
+
+
+; Information added by drupal.org packaging script on 2009-06-19
+version = "6.x-1.0-beta1"
+core = "6.x"
+project = "views_slideshow_imageflow"
+datestamp = "1245446190"
+
